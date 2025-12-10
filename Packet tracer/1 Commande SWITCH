@@ -1,0 +1,46 @@
+[CREATION VLAN]
+ena
+conf t
+vlan 99
+name nomvlan
+exit
+end
+write memory (sauvegarde)
+
+[AFFECTATION DES PORTS AU VLAN]
+interface fa0/1
+switchport mode access
+switchport access vlan 99
+spanning-tree portfast ( pas obligatoire : sert à rendre un port utilisable immédiatement quand un PC est branché dessus)
+exit
+end
+write memory
+
+VERIFIER : show vlan brief, show interfaces trunk, show running-config interface gi0/1
+
+[TRUNK VLAN SWITCH VERS ROUTEUR OU SWITCH]
+interface gi0/1
+switchport mode trunk
+switchport trunk allowed vlan 20,30,40,50,99
+no shut
+exit
+
+[PORT-SECURITY]
+interface fa0/1
+switchport mode access
+switchport access vlan 99
+switchport port-security
+switchport port-security maximum 1
+switchport port-security violation restrict
+switchport port-security mac-address sticky
+spanning-tree portfast (pas obligatoire)
+exit
+
+VERIFIER port-security : show port-security interface fa0/4 et show port-security
+
+[CONF PORTS ACCESS PC ET SWITCH]
+interface range fa0/1
+switchport mode access
+switchport access vlan 99
+spanning-tree portfast (pas obligatoire)
+
